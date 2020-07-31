@@ -2,7 +2,7 @@
   <el-dialog :title="msg.title" :visible.sync="msg.show">
     <el-form :model="form">
       <el-form-item label="所属角色" :label-width="formLabelWidth">
-        <el-select v-model="form">
+        <el-select v-model="form.roleid">
           <el-option
             v-for="item in roleList"
             :key="item.id"
@@ -84,7 +84,6 @@ export default {
 
   data() {
     return {
-      dialogFormVisible: true,
       form: {
         roleid: 0,
         username: "",

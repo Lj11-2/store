@@ -13,61 +13,78 @@
         <i class="el-icon-menu"></i>
         <span slot="title">首页</span>
       </el-menu-item>
-      <el-submenu index="2" class="nav">
+      <el-submenu :index="item.id+''" class="nav" v-for="item in user.menus" :key="item.id" v-show="children">
         <template slot="title">
-          <i class="el-icon-location"></i>
-          <span>系统设置</span>
+          <i :class="item.icon"></i>
+          <span>{{item.title}}</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/menu">菜单管理</el-menu-item>
-          <el-menu-item index="/role">角色管理</el-menu-item>
-          <el-menu-item index="/manager">管理员管理</el-menu-item>
+          <el-menu-item v-for="i in item.children" :key="i.id" :index="i.url">{{i.title}}</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-        <el-submenu index="3">
-        <template slot="title">
-          <i class="el-icon-location"></i>
-          <span>商城管理</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="/kind">商品分类</el-menu-item>
-          <el-menu-item index="/spec">商品规格</el-menu-item>
-          <el-menu-item index="/shopmanage">商品管理</el-menu-item>
-          <el-menu-item index="/member">会员管理</el-menu-item>
-          <el-menu-item index="/banner">轮播图管理</el-menu-item>
-          <el-menu-item index="/seckill">秒杀活动</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>   
+
+       <el-menu-item  :index="i.url" v-for="i in user.menus" v-show="!children">
+        <span slot="title">{{i.title}}</span>
+      </el-menu-item>
     </el-menu>
     <!-- 侧边栏 -->
     <el-container>
-      <el-header>Header</el-header>
+      <el-header>
+        <div style="line-height:60px;float:right">
+          <span style="color:#ffffff">{{user.username}}</span>
+          <span>
+            <el-button type="primary" @click="back()" style="100px">退出</el-button>
+          </span>
+        </div>
+      </el-header>
+
       <el-main>
-         <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>{{$route.name}}</el-breadcrumb-item>
-          </el-breadcrumb>
-          <router-view></router-view>
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item>{{$route.name}}</el-breadcrumb-item>
+        </el-breadcrumb>
+        <router-view></router-view>
       </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
-export default {};
+import { mapGetters, mapActions } from "vuex";
+export default {
+  computed: {
+    ...mapGetters({
+      user: "user",
+    }),
+    //判断是否有目录
+    children(){
+     return this.user.menus[0].children ? true : false
+    }
+  },
+  methods: {
+    back() {
+      this.changeUser(null);
+      this.$router.push("/login");
+    },
+    ...mapActions({
+      changeUser: "changeUser",
+    }),
+  },
+};
 </script>
 
 <style scoped>
-.nav{
+.nav {
   width: 200px;
 }
-.all{
+.all {
   height: 100vh;
 }
-.el-header{
-  background:#B3C0D1 ;
+.el-header {
+  background: rgb(4, 4, 77);
 }
-.el-main{
-  margin-top: 20px;
+.el-main {
+  background: #b3c0d1;
 }
+
 </style>'

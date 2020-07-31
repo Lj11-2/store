@@ -65,6 +65,8 @@ export default {
         "/goods",
         "/banner",
         "/seckill",
+        "/member",
+        "/shopmanage",
       ],
       icons: [
         "el-icon-setting",

@@ -54,25 +54,24 @@ export default {
         status: 1,
       };
     },
-    cancel(){
-        this.msg.show=false;
-        if(!this.msg.showAdd){
-            this.empty()
-        }
+    cancel() {
+      this.msg.show = false;
+      if (!this.msg.showAdd) {
+        this.empty();
+      }
     },
     add() {
-      this.empty();
       //点击树形反选获取id，'[2,3,4]' 字符串数组给后端
-      console.log(this.$refs.tree.getCheckedKeys());
       this.form.menus = JSON.stringify(this.$refs.tree.getCheckedKeys());
       roleAdd(this.form).then((res) => {
         if (res.data.code == 200) {
           successAlert(res.data.msg);
-          this.requseRoletList();
         } else {
           warningAlert(res.data.msg);
         }
         this.msg.show = false;
+        this.requseRoletList();
+        this.empty();
       });
     },
     ...mapActions({
@@ -84,11 +83,12 @@ export default {
       roleId({ id: id }).then((res) => {
         this.form = res.data.list;
         this.form.id = id;
-        this.$refs.tree.setCheckedKeys(JSON.parse(res.data.list.menus))
+        this.$refs.tree.setCheckedKeys(JSON.parse(res.data.list.menus));
       });
     },
     //编辑角色
     change() {
+      this.form.menus = JSON.stringify(this.$refs.tree.getCheckedKeys());
       changeRole(this.form).then((res) => {
         if (res.data.code == 200) {
           successAlert(res.data.msg);

@@ -1,14 +1,26 @@
 import axios from 'axios'
 import qs from 'qs'
+import store from '../store'
+import { warningAlert } from "../util/alert";
+//请求拦截
+axios.interceptors.request.use((config) => {
+    if (config.url != url + '/api/userlogin')
+        config.headers.authorization = store.state.user.token
+    return config
+})
+
 
 //拦截响应
 axios.interceptors.response.use((res) => {
     console.log('---------' + res.config.url + '---------')
     console.log(res)
+    if (res.data.msg === '登录已过期或访问权限受限') {
+        warningAlert('登录已过期或访问权限受限');
+    }
     return res
 })
 
-const url = '/api'
+const url = ''
 //菜单添加
 //--------------------------------------------菜单管理---------------------------------
 export const requestAdd = (params) => {
@@ -147,6 +159,16 @@ export const managerNum = () => {
         method: 'get'
     })
 }
+//管理员登录
+export const managerLogin = (params) => {
+    return axios({
+        url: url + '/api/userlogin',
+        method: "post",
+        data: params
+
+    })
+}
+
 
 
 //--------------------------------------------商品分类-------------------------------------
@@ -442,5 +464,17 @@ export const seckillDelete = (params) => {
         url: url + '/api/seckdelete',
         method: 'post',
         data: qs.stringify(params)
+    })
+}
+
+
+
+//登录
+export const requestLogin = (params) => {
+    return axios({
+        url: url + '/api/login',
+        method: 'post',
+        data: qs.stringify(params)
+
     })
 }

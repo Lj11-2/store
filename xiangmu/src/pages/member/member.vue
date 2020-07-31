@@ -1,5 +1,5 @@
 '<template>
-  <div style="margin-top:10px">
+  <div style="margin-top:10px;">
     <v-list @edit='edit'></v-list>
     <v-add :msg="msg" ref="add"></v-add>
   </div>

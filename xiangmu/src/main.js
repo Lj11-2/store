@@ -21,8 +21,12 @@ for(let i in filters){
 }
 import store from "./store"
 //图片前缀
-Vue.prototype.$imgPre="http://localhost:3000"
+Vue.prototype.$imgPre=""
 /* eslint-disable no-new */
+
+
+
+
 new Vue({
   el: '#app',
   router,
